@@ -6,6 +6,8 @@
 </head>
 
 <body>
+<section ng-view> </section>
+
 <% if ( user ) { %>
     <h2>Hello <%=user%> </h2>
     <a href="/logout">Logout</a>
@@ -13,5 +15,21 @@
     <a href="/register">Register</a>
     <a href="/login">Login</a>
 <% } %>
+
+    <script type="text/javascript">
+        window.user = <%- user || 'null' %>;
+    </script>     
+
+	<script type="text/javascript" src="/js/angular/angular.js"></script>
+	<script type="text/javascript" src="/js/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="/example/example.client.module.js"></script>
+	<script type="text/javascript" src="/example/config/example.client.routes.js"></script>
+    <script type="text/javascript" src="/users/users.client.module.js"></script>
+    <script type="text/javascript" src="/users/services/authentication.client.service.js"></script>
+	<script type="text/javascript" src="/application.js"></script>
+
 </body>
 </html>
+<!--+
+    | vim: ts=4 et nowrap autoindent
+    +-->

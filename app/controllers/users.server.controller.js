@@ -77,6 +77,39 @@ exports.logout = function(req, res) {
     res.redirect('/');
 };
 
+exports.saveOAuthUserProfile = function(req, profile, done) {
+   User.findOne({
+        provider: profile.provider,
+        providerId: profile.providerId
+    },
+    function(err, user) {
+        if (err) {
+            return done(err);
+        } else {
+            if (!user) {
+                var possibleUsername = profile.username || ((profile.email) ? profile.email.split('@')[0] : '');
+                User.findUniqueUsername(possibleUsername, null, function(availableUsername) {
+                    profile.username = availableUsername;
+                    user = new User(profile);
+
+                    user.save(function(err) {
+                        if (err) {
+                            var message = _this.getErrorMessage(err);
+                            req.flash('error', message);
+                            return res.redirect('/register');
+                        }
+    
+                        return done(err, user);
+                    });
+                });
+            } else {
+                return done(err, user);
+            }
+        }
+    }
+    );
+};
+
 exports.create = function(req, res, next) {
     var user = new User(req.body);
     user.save(function(err) {
@@ -142,6 +175,16 @@ exports.delete = function(req, res, next) {
     })
 };
 
-/* 
+
+exports.requiresLogin = function(req, res, next) {
+        if (!req.isAuthenticated()) {
+                return res.status(401).send({
+                        message: 'User is not logged in'
+                });
+        }
+        next();
+};
+
+/*
  * vim: ts=4 et autoindent
  */

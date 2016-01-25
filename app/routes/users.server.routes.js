@@ -4,13 +4,13 @@ var users = require('../../app/controllers/users.server.controller')
 module.exports = function(app) {
 
     app.route('/users')
-        .post(users.create)
-        .get(users.list);
+        .post(users.requiresLogin, users.create)
+        .get(users.requiresLogin, users.list);
 
     app.route('/users/:userId')
-        .get(users.read)
-        .put(users.update)
-        .delete(users.delete);
+        .get(users.requiresLogin, users.read)
+        .put(users.requiresLogin, users.update)
+        .delete(users.requiresLogin, users.delete);
 
     app.param('userId', users.userByID);
 
@@ -27,6 +27,17 @@ module.exports = function(app) {
         }));
 
     app.get('/logout', users.logout);
+
+    app.get('/oauth/facebook', passport.authenticate('facebook', {
+        failureRedirect: '/login',
+        scope:['email']
+    }));
+
+    app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
+        failureRedirect: '/login',
+        successRedirect: '/',
+        scope:['email']
+    }));
 
 };
 
