@@ -1,0 +1,24 @@
+{
+  "name": "myTodo",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Lars Boegild Thomsen <lth@netcompartner.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/lbthomsen/meantodo",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/js",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.9",
+    "angular-route": "~1.4.9",
+    "angular-resource": "~1.4.9"
+  }
+}
